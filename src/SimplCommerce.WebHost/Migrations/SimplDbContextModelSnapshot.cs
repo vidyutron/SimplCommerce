@@ -15,7 +15,7 @@ namespace SimplCommerce.WebHost.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.0-rtm-35687")
+                .HasAnnotation("ProductVersion", "2.2.6-servicing-10079")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -108,6 +108,33 @@ namespace SimplCommerce.WebHost.Migrations
                             Id = "en-US",
                             Name = "English (US)"
                         });
+                });
+
+            modelBuilder.Entity("SimplCommerce.Infrastructure.Localization.LocalizedContentProperty", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CultureId")
+                        .IsRequired();
+
+                    b.Property<long>("EntityId");
+
+                    b.Property<string>("EntityType")
+                        .HasMaxLength(450);
+
+                    b.Property<string>("ProperyName")
+                        .IsRequired()
+                        .HasMaxLength(450);
+
+                    b.Property<string>("Value");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CultureId");
+
+                    b.ToTable("Localization_LocalizedContentProperty");
                 });
 
             modelBuilder.Entity("SimplCommerce.Infrastructure.Localization.Resource", b =>
@@ -915,10 +942,38 @@ namespace SimplCommerce.WebHost.Migrations
                         },
                         new
                         {
+                            Id = "Global.AssetBundling",
+                            IsVisibleInCommonSettingPage = true,
+                            Module = "Core",
+                            Value = "false"
+                        },
+                        new
+                        {
                             Id = "Theme",
                             IsVisibleInCommonSettingPage = false,
                             Module = "Core",
                             Value = "Generic"
+                        },
+                        new
+                        {
+                            Id = "Global.DefaultCultureUI",
+                            IsVisibleInCommonSettingPage = true,
+                            Module = "Core",
+                            Value = "en-US"
+                        },
+                        new
+                        {
+                            Id = "Global.CurrencyCulture",
+                            IsVisibleInCommonSettingPage = true,
+                            Module = "Core",
+                            Value = "en-US"
+                        },
+                        new
+                        {
+                            Id = "Global.CurrencyDecimalPlace",
+                            IsVisibleInCommonSettingPage = true,
+                            Module = "Core",
+                            Value = "2"
                         },
                         new
                         {
@@ -947,6 +1002,13 @@ namespace SimplCommerce.WebHost.Migrations
                             IsVisibleInCommonSettingPage = false,
                             Module = "EmailSenderSmpt",
                             Value = ""
+                        },
+                        new
+                        {
+                            Id = "Localization.LocalizedConentEnable",
+                            IsVisibleInCommonSettingPage = true,
+                            Module = "Localization",
+                            Value = "true"
                         },
                         new
                         {
@@ -1877,133 +1939,6 @@ namespace SimplCommerce.WebHost.Migrations
                     b.ToTable("News_NewsItemCategory");
                 });
 
-            modelBuilder.Entity("SimplCommerce.Module.Notifications.Models.NotificationDetail", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTimeOffset>("CreatedOn");
-
-                    b.Property<string>("Data")
-                        .HasMaxLength(1048576);
-
-                    b.Property<string>("DataTypeName")
-                        .HasMaxLength(512);
-
-                    b.Property<string>("EntityId")
-                        .HasMaxLength(96);
-
-                    b.Property<string>("EntityTypeAssemblyQualifiedName")
-                        .HasMaxLength(512);
-
-                    b.Property<string>("EntityTypeName")
-                        .HasMaxLength(250);
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("NotificationName")
-                        .IsRequired()
-                        .HasMaxLength(96);
-
-                    b.Property<byte>("Severity");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Notifications_NotificationDetail");
-                });
-
-            modelBuilder.Entity("SimplCommerce.Module.Notifications.Models.NotificationScheme", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTimeOffset>("CreatedOn");
-
-                    b.Property<string>("Data")
-                        .HasMaxLength(1048576);
-
-                    b.Property<string>("DataTypeName")
-                        .HasMaxLength(512);
-
-                    b.Property<string>("EntityId")
-                        .HasMaxLength(96);
-
-                    b.Property<string>("EntityTypeAssemblyQualifiedName")
-                        .HasMaxLength(512);
-
-                    b.Property<string>("EntityTypeName")
-                        .HasMaxLength(250);
-
-                    b.Property<string>("ExcludedUserIds")
-                        .HasMaxLength(131072);
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("NotificationName")
-                        .IsRequired()
-                        .HasMaxLength(96);
-
-                    b.Property<byte>("Severity");
-
-                    b.Property<string>("UserIds")
-                        .HasMaxLength(131072);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Notifications_NotificationScheme");
-                });
-
-            modelBuilder.Entity("SimplCommerce.Module.Notifications.Models.NotificationSubscription", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTimeOffset>("CreatedOn");
-
-                    b.Property<string>("EntityId")
-                        .HasMaxLength(96);
-
-                    b.Property<string>("EntityTypeAssemblyQualifiedName")
-                        .HasMaxLength(512);
-
-                    b.Property<string>("EntityTypeName")
-                        .HasMaxLength(250);
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<string>("NotificationName")
-                        .HasMaxLength(96);
-
-                    b.Property<long>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Notifications_NotificationSubscription");
-                });
-
-            modelBuilder.Entity("SimplCommerce.Module.Notifications.Models.UserNotification", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<DateTimeOffset>("CreatedOn");
-
-                    b.Property<bool>("IsDeleted");
-
-                    b.Property<long>("NotificationDetailId");
-
-                    b.Property<int>("State");
-
-                    b.Property<long>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Notifications_UserNotification");
-                });
-
             modelBuilder.Entity("SimplCommerce.Module.Orders.Models.Order", b =>
                 {
                     b.Property<long>("Id")
@@ -2270,6 +2205,33 @@ namespace SimplCommerce.WebHost.Migrations
                             IsEnabled = true,
                             LandingViewComponentName = "StripeLanding",
                             Name = "Stripe"
+                        },
+                        new
+                        {
+                            Id = "MomoPayment",
+                            AdditionalSettings = "{\"IsSandbox\":true,\"PartnerCode\":\"MOMOIQA420180417\",\"AccessKey\":\"SvDmj2cOTYZmQQ3H\",\"SecretKey\":\"PPuDXq1KowPT1ftR8DvlQTHhC03aul17\",\"PaymentFee\":0.0}",
+                            ConfigureUrl = "payments-momo-config",
+                            IsEnabled = true,
+                            LandingViewComponentName = "MomoLanding",
+                            Name = "Momo Payment"
+                        },
+                        new
+                        {
+                            Id = "NganLuong",
+                            AdditionalSettings = "{\"IsSandbox\":true, \"MerchantId\": 47249, \"MerchantPassword\": \"e530745693dbde678f9da98a7c821a07\", \"ReceiverEmail\": \"nlqthien@gmail.com\"}",
+                            ConfigureUrl = "payments-nganluong-config",
+                            IsEnabled = true,
+                            LandingViewComponentName = "NganLuongLanding",
+                            Name = "Ngan Luong Payment"
+                        },
+                        new
+                        {
+                            Id = "Cashfree",
+                            AdditionalSettings = "{ \"IsSandbox\":true, \"AppId\":\"358035b02486f36ca27904540853\", \"SecretKey\":\"26f48dcd6a27f89f59f28e65849e587916dd57b9\" }",
+                            ConfigureUrl = "payments-cashfree-config",
+                            IsEnabled = true,
+                            LandingViewComponentName = "CashfreeLanding",
+                            Name = "Cashfree Payment Gateway"
                         });
                 });
 
@@ -2729,6 +2691,8 @@ namespace SimplCommerce.WebHost.Migrations
 
                     b.Property<DateTimeOffset>("LatestUpdatedOn");
 
+                    b.Property<bool>("LockedOnCheckout");
+
                     b.Property<string>("OrderNote")
                         .HasMaxLength(1000);
 
@@ -2902,6 +2866,14 @@ namespace SimplCommerce.WebHost.Migrations
                     b.HasOne("SimplCommerce.Module.Core.Models.User")
                         .WithMany()
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("SimplCommerce.Infrastructure.Localization.LocalizedContentProperty", b =>
+                {
+                    b.HasOne("SimplCommerce.Infrastructure.Localization.Culture", "Culture")
+                        .WithMany()
+                        .HasForeignKey("CultureId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
